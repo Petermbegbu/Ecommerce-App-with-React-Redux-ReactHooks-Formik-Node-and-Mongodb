@@ -1,0 +1,3 @@
+export const MOST_SOLD_BOOKS = "MOST_SOLD_BOOKS";
+export const MOST_SOLD_PHONES = "MOST_SOLD_PHONES";
+

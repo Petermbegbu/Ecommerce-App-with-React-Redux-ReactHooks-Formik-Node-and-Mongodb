@@ -1,6 +1,5 @@
 
 const handleAuthErrors = (error) => {
-    console.log(error)
     let errorMessages = {
         name: "",
         email: "", 

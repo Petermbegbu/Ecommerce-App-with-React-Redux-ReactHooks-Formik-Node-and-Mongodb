@@ -16,7 +16,6 @@ module.exports.signup_post = async (req, res) => {
         const token = createToken(user._id);
         res.cookie("myCookieToken", token, {httpOnly: true, maxAge: 3 * 24 * 60 * 60 * 1000 });
         res.status(201).json({user});
-        // res.status(201).json({userId: user._id});
     } catch(error){
         const errorMessages = handleAuthErrors(error)
         res.json({errorMessages});
@@ -50,7 +49,7 @@ module.exports.logout_get = (req, res) => {
     res.json({message: "success"});
 }
 
-//for checking if user exist on any 
+//for checking current user
 module.exports.currentUser = (req, res) => {
     const token = req.cookies.myCookieToken;
 
@@ -60,7 +59,6 @@ module.exports.currentUser = (req, res) => {
             if(error){
                 res.json({message: "redirect"});
             } else {
-                console.log("decodedToken", decodedToken);
                 const user = await User.findById(decodedToken.id);
                 res.json({user});
             }

@@ -93,7 +93,10 @@ const Signin = (props) => {
 
                 onSubmitProps.resetForm();
                 props.signInAction(user);
-                props.history.push("/")
+
+                user.isAdmin ? 
+                props.history.push("/admin/adminDashboard") :
+                props.history.push("/user/userDashboard")
             }
         }   
         

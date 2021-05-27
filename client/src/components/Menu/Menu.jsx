@@ -28,10 +28,21 @@ const Menu = ({history, logOutAction, isSignedIn, user}) => {
     }
 
     const renderMenu = () => {
-        
         if (isSignedIn) {
             return (
                 <React.Fragment>
+                    {user && user.isAdmin === true && (
+                        <li className="nav-item">
+                            <Link className="nav-link" style={isActive("/admin/adminDashboard")} to="/admin/adminDashboard">Dashboard</Link>
+                        </li>
+                    )}
+
+                    {user && user.isAdmin === false && (
+                        <li className="nav-item">
+                            <Link className="nav-link" style={isActive("/user/userDashboard")} to="/user/userDashboard">Dashboard</Link>
+                        </li>
+                    )}
+                    
                     <li className="nav-item">
                         <span className="nav-link logout" onClick={() => logout()}>Log Out</span>
                     </li>
@@ -44,11 +55,10 @@ const Menu = ({history, logOutAction, isSignedIn, user}) => {
             return (
                 <React.Fragment>
                     <li className="nav-item">
-                        <Link className="nav-link" style={isActive("/Signin")} to="/Signin">Signin</Link>
+                        <Link className="nav-link" style={isActive("/signin")} to="/signin">Signin</Link>
                     </li>
-                    
                     <li className="nav-item">
-                        <Link className="nav-link" style={isActive("/Signup")} to="/Signup">Signup</Link>
+                        <Link className="nav-link" style={isActive("/signup")} to="/signup">Signup</Link>
                     </li>
                 </React.Fragment>
             )
@@ -65,6 +75,12 @@ const Menu = ({history, logOutAction, isSignedIn, user}) => {
                 <ul className="navbar-nav menu">
                     <li className="nav-item">
                         <Link className="nav-link" style={isActive("/")} to="/">Home</Link>
+                    </li>
+                    <li className="nav-item">
+                        <Link className="nav-link" style={isActive("/books")} to="/books">Books</Link>
+                    </li>
+                    <li className="nav-item">
+                        <Link className="nav-link" style={isActive("/phones")} to="/phones">Phones</Link>
                     </li>
                     
                     {renderMenu()}
