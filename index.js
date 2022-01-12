@@ -26,6 +26,18 @@ app.use("/api", userRoute);
 
 app.use("/api/uploads", express.static(path.join("uploads")));
 
+if(process.env.NODE_ENV === "production"){
+    //If express does not recognize a route, it checks the react build files.
+    //Express will serve up production assets like our main.js and main.css file.
+    app.use(express.static('client/build'))
+
+
+    //Express will serve up index.js file if it doesnt recognize the route
+    app.get('*', (req, res) => {
+        res.sendFile(path.resolve((__dirname, 'client', 'build', 'index.html')));
+    });
+}
+
 const PORT = process.env.PORT;
 
 app.listen(PORT, () => console.log(`Listening on port ${PORT}`));

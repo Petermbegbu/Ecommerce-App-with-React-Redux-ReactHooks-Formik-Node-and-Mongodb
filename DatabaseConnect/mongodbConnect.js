@@ -9,3 +9,4 @@ mongoose.connect(process.env.DATABASE, {
     useCreateIndex: true
 }).then(() => console.log("DB is Connected"))
     .catch((error) => console.log("DB Error", error))
+

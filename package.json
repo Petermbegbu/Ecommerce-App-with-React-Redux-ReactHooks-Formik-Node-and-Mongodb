@@ -3,13 +3,18 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "engines": {
+    "node": "12.13.0",
+    "npm": "6.12.0"
+  },
   "scripts": {
     "start": "nodemon index.js",
     "server": "nodemon index.js",
     "client": "npm run start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\" ",
     "data:import": "node seeders/seeder",
-    "data:destroy": "node seeders/seeder -d"
+    "data:destroy": "node seeders/seeder -d",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
   },
   "keywords": [],
   "author": "",
