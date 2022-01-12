@@ -15,7 +15,7 @@ const app = express();
 require("./DatabaseConnect/mongodbConnect");
 
 //middlewares
-app.use(morgan("dev"));
+app.use(morgan("dev")); 
 app.use(express.json());
 app.use(cookieParser());
 app.use("/api", authRoute);

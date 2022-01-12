@@ -13,7 +13,7 @@ const AdminDashboard = ({user}) => {
         <Layout title="Dashboard" description={`Welcome ${title}!`} className="container">
             <div className="row">
                 <div className="col-md-3">
-                    <div className="card mb-5">
+                    <div className="mb-5">
                         <h4 className="card-header">Admin Links</h4>
                         <ul className="list-group">
                             <li className="list-group-item">
@@ -27,7 +27,7 @@ const AdminDashboard = ({user}) => {
                 </div>
 
                 <div className="col-md-9">
-                    <div className="card mb-5">
+                    <div className="mb-5">
                         <h4 className="card-header">Admin information</h4>
                         <ul className="list-group">
                             <li className="list-group-item">

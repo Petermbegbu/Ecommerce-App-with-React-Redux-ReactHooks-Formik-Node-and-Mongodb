@@ -7,7 +7,7 @@ module.exports.isSignedIn = (req, res, next) => {
 
     //check if token exist and is verified
     if(token){
-        jwt.verify(token, process.env.JWT_SECRET_KEY, (error, decodedToken) => {
+        jwt.verify(token, process.env.JWT_SECRET_KEY, async (error, decodedToken) => {
             if(error){
                 res.redirect("/signin");
             } else {

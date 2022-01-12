@@ -12,6 +12,7 @@ const Layout = ({title="Title", description="Description", className, children }
                 <h2>{title}</h2>
                 <p className="bold">{description}</p>
             </div>
+            
             <div className={className}>
                 {children}
             </div>

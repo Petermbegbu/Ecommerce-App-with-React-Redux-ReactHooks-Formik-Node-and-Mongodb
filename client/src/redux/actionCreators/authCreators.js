@@ -2,7 +2,6 @@ import {SIGN_IN, LOG_OUT, GET_CURRENT_USER} from "../actionTypes/authTypes";
 import axios from "axios";
 
 export const signInAction = (user) => {
-
     return {
         type: SIGN_IN,
         payload: user

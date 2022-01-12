@@ -1,24 +1,33 @@
 import React from "react";
-// import {Link} from "react-router-dom";
+import {connect} from "react-redux";
 
+import {addToCartAction} from "../../redux/actionCreators/cartCreators";
+import Button from "../button/Button";
 import "./Card.css";
-
-
 import ShowImage from "../showImage/ShowImage";
 
-const Card = ({product}) => {
+const Card = ({product, col, addToCartAction}) => {
+
+    const handleClick = () => {
+        addToCartAction(product);
+    }
+
     return (
-        <div className="col-md-4 mb-5">
+        <div className={`col-md-${col} bottomSpacing`}>
             <div className="card">
-                <ShowImage imageUrl={product.image} name={product.name} />
-                <div className="card-header">{product.name}</div>
+                <ShowImage product={product} />
+                <div className="card-header">{product.description.slice(0, 25)} ...</div>
                 <div className="card-footer d-flex justify-content-between">
                     <span>N{product.price}</span>
-                    <button type="button" className="btn btn-dark">Add to Cart</button>
+                    <Button 
+                        type="button" 
+                        className="smallBtn" text="ADD TO CART" 
+                        onClick={() => handleClick()}
+                    />
                 </div>
             </div>
         </div>
     )
 }
 
-export default Card;
+export default connect(null, {addToCartAction})(Card);

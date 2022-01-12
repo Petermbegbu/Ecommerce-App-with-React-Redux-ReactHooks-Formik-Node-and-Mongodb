@@ -8,7 +8,7 @@ import axios from "axios";
 import Layout from "../Layout/Layout";
 import "./Admin.css";
 
-const AddProduct = ({history, user}) => {
+const AddProduct = ({user}) => {
 
     const [categoryValues, setCategoryValues] = useState([])
     const [adminUsers, setAdminUsers] = useState([])

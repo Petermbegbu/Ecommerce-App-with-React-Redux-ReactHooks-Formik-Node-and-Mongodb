@@ -1,12 +1,15 @@
-import React from "react";
+import React, {useState} from "react";
 import {Link, withRouter} from "react-router-dom";
 import {connect} from "react-redux";
 import axios from "axios";
 
 import {logOutAction} from "../../redux/actionCreators/authCreators";
+import CartIcon from "../cartIcon/CartIcon";
+import CartDropdown from "../cartDropdown/CartDropdown";
+import { cartClickAction } from "../../redux/actionCreators/cartCreators";
 import "./Menu.css";
 
-const Menu = ({history, logOutAction, isSignedIn, user}) => {
+const Menu = ({history, logOutAction, cartClickAction, isSignedIn, user, isCartHidden}) => {
 
     const logout = async () => {
         const res = await axios({
@@ -47,7 +50,7 @@ const Menu = ({history, logOutAction, isSignedIn, user}) => {
                         <span className="nav-link logout" onClick={() => logout()}>Log Out</span>
                     </li>
                     <li className="nav-item">
-                        <span className="nav-link">{user.email}</span>
+                        <span className="nav-link">{user ? user.email : null}</span>
                     </li>
                 </React.Fragment>
             )
@@ -64,7 +67,6 @@ const Menu = ({history, logOutAction, isSignedIn, user}) => {
             )
         }
     }
-
 
     return (
         <div>
@@ -84,21 +86,30 @@ const Menu = ({history, logOutAction, isSignedIn, user}) => {
                     </li>
                     
                     {renderMenu()}
+
+                    <li className="nav-item">
+                        <span className="nav-link" onClick={() => cartClickAction()}>
+                            <CartIcon />
+                        </span>
+                    </li>
                 </ul>
             </nav>
 
+            {isCartHidden && <CartDropdown />}
         </div>
     )
  }
 
  const mapStateToProps = (state)=> {
-     const {isSignedIn, user} = state.auth;
+    const {isSignedIn, user} = state.auth;
+    const {isCartHidden} = state.cart;
 
      return {
-        isSignedIn: isSignedIn,
-        user
+        isSignedIn,
+        user,
+        isCartHidden
      }
  }
 
 
- export default connect(mapStateToProps, {logOutAction})(withRouter(Menu));
+ export default connect(mapStateToProps, {logOutAction, cartClickAction})(withRouter(Menu));

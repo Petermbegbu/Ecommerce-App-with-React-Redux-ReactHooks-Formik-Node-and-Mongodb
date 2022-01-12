@@ -1,0 +1,22 @@
+.dropDownBlock {
+    width: 250px;
+    height: 330px;
+    border: 2px solid;
+    padding: 5px;
+    z-index: 2;
+    position: absolute;
+    right: 5px;
+    display: flex;
+    justify-content: center;
+}
+
+.checkkOutBtn {
+    position: absolute;
+    bottom: 10px;
+}
+
+.innerCartBlock {
+    width: 100%;
+    height: 270px;
+    overflow: scroll;
+}

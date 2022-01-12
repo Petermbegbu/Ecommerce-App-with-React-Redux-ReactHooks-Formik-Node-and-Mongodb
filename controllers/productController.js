@@ -27,17 +27,42 @@ module.exports.getProducts = async (req, res) => {
     //This gets products based on the query passed
     const order = req.query.order == "desc" ? -1 : 1;
     const sortBy = req.query.sortBy ? req.query.sortBy : "updatedAt";
-    const limit = req.query.limit ? req.query.limit : "12";
-    const category = req.query.category ? req.query.category : "books";
+    const limit = req.query.limit ? Number(req.query.limit) : 12;
+    const skip = req.query.skip ? Number(req.query.skip) : 0;
+    const category = req.query.category ? req.query.category : "60971c98b9b70e0fb8b1a194";
+    const search = req.query.search ?
+        {name: {$regex: req.query.search, $options: "i"}} : {};
+
 
     try {
-        const products = await Product.find({_category: category})
+        const count = await Product.countDocuments({_category: category, ...search});
+
+        const products = await Product.find({_category: category, ...search})
             .populate("_category")
             .sort({[sortBy]: order})
-            .limit(Number(limit))
-        console.log("products", products)
-        // const filteredProducts = products.filter(product => product._category.name === category)
-        res.status(200).send(products);
+            .skip(skip)
+            .limit(limit)
+
+        const totalPages = Math.ceil(count / limit);
+
+        res.status(200).json({products, totalPages});
+    } catch(error){
+        res.status(404).json({errorMessages: error});
+    }
+}
+
+
+
+module.exports.getSingleProduct = async (req, res) => {
+    //Gets a required route parameter
+    const id = req.params.id;
+    const limit = req.query.limit ? req.query.limit : "4";
+
+    try {
+        const product = await Product.findById(id)
+            .populate("_category", "_id name")
+
+        res.status(200).send(product);
     } catch(error){
         res.status(404).json({errorMessages: error});
     }
@@ -47,18 +72,18 @@ module.exports.getProducts = async (req, res) => {
 module.exports.getRelatedProducts = async (req, res) => {
     //Gets a required route parameter
     //This gets related products based on the category and excluding the current product
-    const id = req.params.id;
+    const productId = req.params.productId;
     const categoryName = req.params.categoryName;
     const order = req.query.order == "desc" ? -1 : 1;
     const limit = req.query.limit ? req.query.limit : "4";
     const sortBy = req.query.sortBy ? req.query.sortBy : "updatedAt";
 
     try {
-        const products = await Product.find({_id: {$ne: id}, _category: categoryName})
+        const products = await Product.find({_id: {$ne: productId}, _category: categoryName})
             .populate("_category", "_id name")
             .sort({[sortBy]: order})
             .limit(Number(limit))
-
+        console.log("products", products)
         res.status(200).send(products);
     } catch(error){
         res.status(404).json({errorMessages: error});
@@ -77,5 +102,7 @@ module.exports.getProductCategories = async (req, res) => {
         res.status(404).json({errorMessages: error});
     }
 }
+
+
 
 

@@ -1,56 +1,75 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import { connect } from "react-redux";
-import {Link} from "react-router-dom";
 
+import DisplayProducts from "../displayProducts/DisplayProducts";
+import {getPaginatedBooksAction} from "../../redux/actionCreators/productCreators";
+import SideBar from "../sideBar/SideBar";
 import Layout from "../Layout/Layout";
-import Card from "../card/Card"
 import "./Books.css";
 
 
-const Books = ({bestSellerBooks}) => {
-    const sideBar = () => (
-        <div className="">
-            <div className="card mb-5">
-                <h4 className="card-header">Categories</h4>
-                <ul className="list-group">
-                    <li className="">
-                        <Link className="nav-link" to="/create/category">Create Category</Link>
-                    </li>
-                    <li className="">
-                        <Link className="nav-link" to="/create/product">Create Product</Link>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    );
+const Books = ({paginatedBooks, totalPages, bookSearchValue, getPaginatedBooksAction}) => {
+    const [limit, setLimit] = useState(6);
+    const [skip, setSkip] = useState(0);
+    const [pageNo, setPageNo] = useState(1);
+    const [found, setFound] = useState("");
+    const order = "desc";
+    const sortBy = "updatedAt";
+    const category = "books";
+
+    const nextPage = () => {
+        setSkip(skip + limit);
+        setPageNo(pageNo + 1);
+    }
+
+    const previousPage = () => {
+        setSkip(skip - limit);
+        setPageNo(pageNo - 1);
+    } 
 
 
-    const bookList = () => (
-        <div>
-            <h2 className="text-center">All Books</h2>
-            <div className="row p-5">
-                {
-                    bestSellerBooks.map(product => (
-                        <Card key={product._id} product={product} />
-                    ))
-                }
-            </div>
-        </div>
-    )
+    const actions = async () => {
+        await getPaginatedBooksAction(sortBy, order, limit, skip, bookSearchValue)
+    }
 
+    useEffect(() => {
+        actions();
+    }, [skip, limit])
+
+    // if(bookSearchValue && totalPages > 1){
+    //     setFound(`Found ${totalPages} Products`);
+    // }
+    
+    // if(bookSearchValue && totalPages < 1){
+    //     setFound(`Found ${totalPages} Products`);
+    // }
 
     const title = "Book Shop";
 
     return (
-        <Layout title={title} description="Search and find books of your choice" className="container-fluid">
-            <div className="row">
+        <Layout title={title} description="Search and find books of your choice" className="container-fluid px-5">
+            <div className="row my-5">
                 <div className="col-md-3">
-                    {sideBar()}
+                    <SideBar pageName="Books" limit={limit} skip={skip} category={category}/>
                 </div>
                 <div className="col-md-9">
-                    {bookList()}
+                    <h2 className="text-center">All Books</h2>
+                    <DisplayProducts products={paginatedBooks} col="4"/>
+
+                    <div className="d-flex justify-content-around">
+                        {
+                            skip === 0 ? null : 
+                                <button onClick={previousPage} className="btn btn-info">Previous Page</button>
+                        },
+
+                        {
+                            pageNo === totalPages ? null :
+                                <button onClick={nextPage} className="btn btn-secondary">Next Page</button>
+                        }
+                    </div>
                 </div>
             </div>
+
         </Layout>
     )
 }
@@ -59,8 +78,10 @@ const mapStateToProps = (state) => {
     const {books} = state;
 
     return {
-        bestSellerBooks: books.bestSellerBooks,
+        paginatedBooks: books.paginatedBooks,
+        totalPages: books.totalPages,
+        bookSearchValue: books.bookSearchValue
     }
 }
 
-export default connect(mapStateToProps)(Books);
+export default connect(mapStateToProps, {getPaginatedBooksAction})(Books);

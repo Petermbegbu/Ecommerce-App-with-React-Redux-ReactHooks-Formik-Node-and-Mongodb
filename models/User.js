@@ -47,6 +47,7 @@ const userSchema = new mongoose.Schema(
 
 //fire a function before the document gets saved to the database
 userSchema.pre("save", async function(next) {
+    //Note the value of 'this' is our user model.
     const salt = await bcrypt.genSalt();
     this.password = await bcrypt.hash(this.password, salt);
 
@@ -56,16 +57,17 @@ userSchema.pre("save", async function(next) {
 
 //A static method to login user
 userSchema.statics.login = async function(email, password){
+    //Note the value of 'this' is our user model.
     //check in the database to see if the user's email already exist
     const user = await this.findOne({ email });
 
-    if(user){
+    if (user) {
         //then we compare the password the user entered with the hashed one in our database;
         const auth = await bcrypt.compare(password, user.password) //This returns true or false;
         //Note bcrypt will hash the password before comparing it with the already hashed-
         //password in the database;
 
-        if(auth){
+        if (auth) {
             return user;
         } else {
             throw Error("Incorrect password");
