@@ -6,7 +6,7 @@ export default function CartItem({cartItem}) {
     return (
         <div className="row mb-2">
             <div className="col-md-4">
-                <img src={`/api/${cartItem.image}`} 
+                <img src={`/api/get/product/image/${cartItem._id}`} 
                     alt={cartItem.name} 
                     className="cartImage"
                 />

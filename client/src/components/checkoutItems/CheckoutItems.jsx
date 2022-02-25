@@ -10,7 +10,7 @@ const CheckoutItems = ({cartItem, removeFromCartAction, addToCartAction, decreas
     return (
         <tr>
             <td className="align-middle">
-                <img src={`/api/${cartItem.image}`} alt={cartItem.name} className="cartImage"/>
+                <img src={`/api/get/product/image/${cartItem._id}`} alt={cartItem.name} className="cartImage"/>
             </td>
             <td className="align-middle">{cartItem.name}</td>
             <td className="align-middle">

@@ -162,11 +162,11 @@ const AddProduct = ({user}) => {
         setSuccess(false);
         setError(false);
 
-        const config = {
-            headers: {
-                "Content-Type": "multipart/form-data"
-            }
-        }
+        // const config = {
+        //     headers: {
+        //         "Content-Type": "multipart/form-data"
+        //     }
+        // }
         const formData = new FormData();
 
         formData.append("name", values.name);
@@ -178,7 +178,7 @@ const AddProduct = ({user}) => {
         formData.append("_user", values._user);
 
 
-        const response = await axios.post("/api/create-product", formData, config )
+        const response = await axios.post("/api/create-product", formData )
 
         const {data} = response;
 

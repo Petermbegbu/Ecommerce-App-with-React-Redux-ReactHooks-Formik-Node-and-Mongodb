@@ -2,7 +2,8 @@ import React from "react";
 import Card from "../card/Card";
 
 const DisplayProducts = ({products, col}) => {
-
+    console.log(products);
+    
     return (
         <div className="row">
             {
